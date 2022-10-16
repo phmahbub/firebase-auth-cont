@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import swal from "sweetalert";
+import { AuthContext } from "../firebase/UserContext";
+
 
 const NavBar = () => {
+  const {user, logOut} = useContext(AuthContext)
+
+  const handleLogout = () =>{
+    logOut()
+    .then(() => {
+     user.email? swal("Log out successful"): swal("Please Sign in");
+    })
+    .catch((error)=>{
+
+    })
+
+  }
   return (
     <div>
       <div className="navbar bg-base-300">
         <div className="flex-1">
-          <Link to="/header" className="btn btn-ghost normal-case text-xl">
+          <Link to="/home" className="btn btn-ghost normal-case text-xl">
             Home
           </Link>
         </div>
@@ -26,12 +41,12 @@ const NavBar = () => {
 
         <div className="flex-none gap-2">
           <div className="form-control">
-           <p className="normal-case text-xl font-semibold text-primary">User Name</p>
+           <p className="normal-case text-xl font-semibold text-primary">{user?.displayName}</p>
           </div>
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                <img src="https://placeimg.com/80/80/people" />
+                <img src={user?.photoURL}/>
               </div>
             </label>
             <ul
@@ -48,7 +63,10 @@ const NavBar = () => {
                 <Link>Settings</Link>
               </li>
               <li>
-                <Link>Logout</Link>
+               {
+                user?.email?  <Link onClick={handleLogout} className="btn btn-info text-primary">Logout</Link> :
+                <Link to='/signup' className="btn btn-primary">Login</Link>
+               }
               </li>
             </ul>
           </div>
