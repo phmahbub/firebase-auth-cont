@@ -37,6 +37,12 @@ const NavBar = () => {
              Signup
             </Link>
           </div>
+
+          <div className="flex-1">
+            <Link to="/secrete" className="btn btn-ghost normal-case text-xl">
+             Secrete
+            </Link>
+          </div>
         </div>
 
         <div className="flex-none gap-2">
